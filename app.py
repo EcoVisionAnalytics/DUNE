@@ -14,7 +14,7 @@ col1, col2 = st.columns([8, 2])
 with col1:
     st.title("DUNE: Data Unified Normalization Environment")
     st.markdown("_\"Highly organized research is guaranteed to produce nothing new.\" - Frank Herbert, Dune_")
-    st.markdown("_\"Science is made up of so many things that appear obvious after they are explained.\" - Frank Herbert, Dune_") 
+    st.markdown("_\"Science is made up of so many things that appear obvious after they are explained.\" - Frank Herbert, Dune_")
 with col2:
     st.image("logo.png", width=150)
 
@@ -47,7 +47,7 @@ with st.sidebar.expander("Read Me"):
         - Remove duplicate rows.
 
     5. **Outliers:**
-        - Detect and optionally remove outliers in selected numeric columns.
+        - Detect and optionally remove outliers in selected numeric columns (IQR method).
 
     6. **Basic Stats:**
         - Perform statistical operations on selected columns.
@@ -112,94 +112,93 @@ if uploaded_file:
         summarize_data(df)
 
     elif option == "Cleaning Options":
-    st.subheader("Cleaning Options")
+        st.subheader("Cleaning Options")
 
-    with st.expander("Change Data Types"):
-        col_dtype = st.selectbox("Select column to change type", df.columns)
-        dtype = st.selectbox("Select new type", ["int", "float", "str"])
-        if st.button("Apply Type Change"):
-            try:
-                df[col_dtype] = df[col_dtype].astype(dtype)
-                st.success(f"{col_dtype} converted to {dtype}.")
-            except Exception as e:
-                st.error(f"Type conversion failed: {e}")
+        with st.expander("Change Data Types"):
+            col_dtype = st.selectbox("Select column to change type", df.columns)
+            dtype = st.selectbox("Select new type", ["int", "float", "str"])
+            if st.button("Apply Type Change"):
+                try:
+                    df[col_dtype] = df[col_dtype].astype(dtype)
+                    st.success(f"{col_dtype} converted to {dtype}.")
+                except Exception as e:
+                    st.error(f"Type conversion failed: {e}")
 
-    with st.expander("Rename Columns"):
-        col_rename = st.selectbox("Select column to rename", df.columns)
-        new_name = st.text_input("New column name")
-        if st.button("Apply Rename") and new_name:
-            df.rename(columns={col_rename: new_name}, inplace=True)
-            st.success(f"Renamed {col_rename} to {new_name}.")
+        with st.expander("Rename Columns"):
+            col_rename = st.selectbox("Select column to rename", df.columns)
+            new_name = st.text_input("New column name")
+            if st.button("Apply Rename") and new_name:
+                df.rename(columns={col_rename: new_name}, inplace=True)
+                st.success(f"Renamed {col_rename} to {new_name}.")
 
-    with st.expander("Handle Missing Values"):
-        na_col = st.selectbox("Column to handle NAs", df.columns)
-        method = st.selectbox("NA handling method", ["Drop NA", "Mean", "Median", "Mode", "Custom Value"])
-        custom_val = None
-        if method == "Custom Value":
-            custom_val = st.text_input("Custom value")
+        with st.expander("Handle Missing Values"):
+            na_col = st.selectbox("Column to handle NAs", df.columns)
+            method = st.selectbox("NA handling method", ["Drop NA", "Mean", "Median", "Mode", "Custom Value"])
+            custom_val = None
+            if method == "Custom Value":
+                custom_val = st.text_input("Custom value")
 
-        if st.button("Apply NA Handling"):
-            try:
-                if method == "Drop NA":
-                    df.dropna(subset=[na_col], inplace=True)
-                elif method == "Mean":
-                    df[na_col].fillna(df[na_col].mean(), inplace=True)
-                elif method == "Median":
-                    df[na_col].fillna(df[na_col].median(), inplace=True)
-                elif method == "Mode":
-                    df[na_col].fillna(df[na_col].mode()[0], inplace=True)
-                elif method == "Custom Value":
-                    df[na_col].fillna(custom_val, inplace=True)
-                st.success(f"Missing values handled in {na_col}.")
-            except Exception as e:
-                st.error(f"Error handling missing data: {e}")
+            if st.button("Apply NA Handling"):
+                try:
+                    if method == "Drop NA":
+                        df.dropna(subset=[na_col], inplace=True)
+                    elif method == "Mean":
+                        df[na_col].fillna(df[na_col].mean(), inplace=True)
+                    elif method == "Median":
+                        df[na_col].fillna(df[na_col].median(), inplace=True)
+                    elif method == "Mode":
+                        df[na_col].fillna(df[na_col].mode()[0], inplace=True)
+                    elif method == "Custom Value":
+                        df[na_col].fillna(custom_val, inplace=True)
+                    st.success(f"Missing values handled in {na_col}.")
+                except Exception as e:
+                    st.error(f"Error handling missing data: {e}")
 
-    with st.expander("Scale Data"):
-        num_cols = df.select_dtypes(include=np.number).columns.tolist()
-        scale_col = st.selectbox("Select column to scale", num_cols)
-        method = st.selectbox("Select scaling method", ["MinMax", "Standard", "Robust", "Normalization", "AbsMax"])
+        with st.expander("Scale Data"):
+            num_cols = df.select_dtypes(include=np.number).columns.tolist()
+            scale_col = st.selectbox("Select column to scale", num_cols)
+            method = st.selectbox("Select scaling method", ["MinMax", "Standard", "Robust", "Normalization", "AbsMax"])
 
-        if st.button("Apply Scaling"):
-            try:
-                scaler = {
-                    "MinMax": MinMaxScaler(),
-                    "Standard": StandardScaler(),
-                    "Robust": RobustScaler(),
-                    "Normalization": Normalizer(),
-                    "AbsMax": MaxAbsScaler()
-                }[method]
-                df[scale_col] = scaler.fit_transform(df[[scale_col]])
-                st.success(f"{scale_col} scaled with {method}.")
-            except Exception as e:
-                st.error(f"Scaling failed: {e}")
+            if st.button("Apply Scaling"):
+                try:
+                    scaler = {
+                        "MinMax": MinMaxScaler(),
+                        "Standard": StandardScaler(),
+                        "Robust": RobustScaler(),
+                        "Normalization": Normalizer(),
+                        "AbsMax": MaxAbsScaler()
+                    }[method]
+                    df[scale_col] = scaler.fit_transform(df[[scale_col]])
+                    st.success(f"{scale_col} scaled with {method}.")
+                except Exception as e:
+                    st.error(f"Scaling failed: {e}")
 
-    with st.expander("Remove Duplicates"):
-        if st.button("Remove Duplicates"):
-            df.drop_duplicates(inplace=True)
-            st.success("Duplicates removed.")
+        with st.expander("Remove Duplicates"):
+            if st.button("Remove Duplicates"):
+                df.drop_duplicates(inplace=True)
+                st.success("Duplicates removed.")
 
     elif option == "Outliers":
-    st.subheader("Outlier Detection")
+        st.subheader("Outlier Detection")
 
-    numeric_cols = df.select_dtypes(include=np.number).columns.tolist()
-    if not numeric_cols:
-        st.warning("No numeric columns found for outlier detection.")
-    else:
-        selected_col = st.selectbox("Select a numeric column", numeric_cols)
-        detect = st.button("Detect Outliers")
+        numeric_cols = df.select_dtypes(include=np.number).columns.tolist()
+        if not numeric_cols:
+            st.warning("No numeric columns found for outlier detection.")
+        else:
+            selected_col = st.selectbox("Select a numeric column", numeric_cols)
+            detect = st.button("Detect Outliers")
 
-        if detect:
-            outliers = find_outliers(df, selected_col)
-            if outliers.empty:
-                st.info("No outliers detected.")
-            else:
-                st.write("Outliers found:")
-                st.dataframe(outliers)
+            if detect:
+                outliers = find_outliers(df, selected_col)
+                if outliers.empty:
+                    st.info("No outliers detected.")
+                else:
+                    st.write("Outliers found:")
+                    st.dataframe(outliers)
 
-                if st.button("Remove Outliers Now"):
-                    df.drop(outliers.index, inplace=True)
-                    st.success(f"Outliers removed from {selected_col}.")
-
+                    if st.button("Remove Outliers Now"):
+                        df.drop(outliers.index, inplace=True)
+                        st.success(f"Outliers removed from {selected_col}.")
 
     elif option == "Basic Stats":
         st.subheader("Basic Statistical Operations")
@@ -233,5 +232,6 @@ if uploaded_file:
         bug_description = st.text_area("Bug Description")
         if st.button("Send Bug Report"):
             send_bug_report(bug_description)
+
 else:
     st.warning("Please upload a CSV or .Rdata file to continue.")
