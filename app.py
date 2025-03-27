@@ -25,7 +25,7 @@ uploaded_file = st.sidebar.file_uploader("Upload Data (.csv, .Rdata)", type=['cs
 
 with st.sidebar.expander("Read Me"):
     st.markdown("""
-    ### DUNE: Data Unified cleaNing Environment
+    ### DUNE: Data Unified Normalization Environment
 
     **Instructions:**
 
