@@ -48,7 +48,7 @@ Automatically generate comprehensive data summary reports to document your clean
 
 🐞 Bug Reporting Made Easy
 
-Encountered an issue? Please report in the app so we can aontinue to develop this product to meet your needs.
+Encountered an issue? Quickly report bugs directly from within the app, ensuring rapid resolution and continuous improvement.
 
 📖 Getting Started
 
@@ -56,19 +56,19 @@ Running DUNE Locally:
 
 Clone this repository:
 
-`git clone https://github.com/your-username/DUNE-App.git`
+git clone https://github.com/your-username/DUNE-App.git
 
 Navigate into the directory:
 
-`cd DUNE-App`
+cd DUNE-App
 
 Install dependencies:
 
-`pip install -r requirements.txt`
+pip install -r requirements.txt
 
 Run the app locally:
 
-`streamlit run app.py`
+streamlit run app.py
 
 🌿 About EcoVision Analytics
 
@@ -85,3 +85,19 @@ Contact us: solutions@ecovisionanalytics.com
 Let's transform data into actionable knowledge, together!
 
 🌎🌱📈
+
+✅ Latest Fixes
+
+Outlier Detection:
+
+Buttons now trigger detection and removal correctly.
+
+Results are shown in a table with proper user confirmation.
+
+Cleaning Options:
+
+All operations (rename, change type, impute, scale, remove duplicates) are separated into expandable sections.
+
+Improved error handling and feedback display.
+
+These improvements ensure smoother workflows and better visibility of your transformations!
