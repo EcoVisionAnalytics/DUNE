@@ -48,7 +48,7 @@ Automatically generate comprehensive data summary reports to document your clean
 
 🐞 Bug Reporting Made Easy
 
-Encountered an issue? Quickly report bugs directly from within the app, ensuring rapid resolution and continuous improvement.
+Encountered an issue? Please report in the app so we can aontinue to develop this product to meet your needs.
 
 📖 Getting Started
 
@@ -56,19 +56,19 @@ Running DUNE Locally:
 
 Clone this repository:
 
-git clone https://github.com/your-username/DUNE-App.git
+`git clone https://github.com/your-username/DUNE-App.git`
 
 Navigate into the directory:
 
-cd DUNE-App
+`cd DUNE-App`
 
 Install dependencies:
 
-pip install -r requirements.txt
+`pip install -r requirements.txt`
 
 Run the app locally:
 
-streamlit run app.py
+`streamlit run app.py`
 
 🌿 About EcoVision Analytics
 
